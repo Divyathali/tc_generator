@@ -1,0 +1,654 @@
+<html>
+<head>
+        <meta charset="utf-8">
+        <title>Ticket Generator</title>
+		    <meta name="viewport" content="width=device-width, initial-scale=1">
+		    <link href="https://fonts.googleapis.com/css?family=Knewave" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+        <link rel="stylesheet" href="assets/css/bootstrap.css">
+        
+        <style>
+          .containetr{
+            display:flex;
+          }
+          div{
+             padding:20px;
+          }
+          #response,
+          #disp{
+            position:absolute;
+            top:400px;
+          }
+          table {
+                position:absolute;
+                max-width: 90%;
+                border:1px solid blue;
+            }
+
+            tr:nth-child(odd) {
+                background-color: #eee;
+            }
+
+            th {
+                background-color:rgb(112, 201, 236);
+                color: #fff;
+                text-align:center;
+                padding: 0.5em 1em;
+            }
+
+            td {
+                text-align:justify;
+                padding: 0.5em 1em;
+            }
+            b{
+              color:red;
+            }
+        </style>
+<script>
+$(document).ready(function(){
+    $("#btn1").click(
+      function() {
+        var yourdomain = 'newaccount1613515571753'; 
+        var api_key = 'gIuQClOzmAAIyFmXgNim'; 
+
+        var formdata = new FormData();
+        formdata.append('description', 'sample description');
+        formdata.append('email', 'divyathalishajahan@gmail.com');
+        formdata.append('subject', 'Test subject');
+        formdata.append('priority', '2');
+        formdata.append('status', '2');
+		    formdata.append('attachments[]', $('#myFile')[0].files[0]);			
+	    
+        $.ajax(
+		
+          {
+            url: "https://"+yourdomain+".freshdesk.com/api/v2/tickets",
+            type: 'POST',
+            contentType: false,
+            processData: false,
+            headers: {
+              "Authorization": "Basic " + btoa(api_key + ":x")
+            },
+            data: formdata,        
+      		
+			success: function(data, textStatus, jqXHR) {			  
+        alert('Status'+':'+jqXHR.status+'\n'+'Sucessfully fetch the Data');
+              var obj=data;
+              var d=document.getElementById('response');
+              var table=document.createElement('table');
+              table.id="myTable";
+              var arr=['ID','Requester_id','Status','Priority','Responder_id','Description','Description_text','Attachments','Updated_at','product_id','Source','Type','Created_at','Due_by','Fr_due_by','Escalated','Email_config_id','custom_fields','Company_id','Spam','CC_emails','Reply_cc_emails','To_emails','Support_email','Ticket_cc_emails','Fwd_emails']
+              for(var j=0;j<arr.length;j++){
+                  var th=document.createElement('th');
+                  th.innerHTML= arr[j];
+                  table.append(th);
+                }
+              
+              var tr=document.createElement('tr');
+
+              var td1=document.createElement('td');
+              td1.innerHTML=obj.id;
+              tr.append(td1);
+
+              var td3=document.createElement('td');
+              td3.innerHTML=obj.requester_id;           
+              tr.append(td3);
+              
+                    
+              var td2=document.createElement('td');
+              td2.innerHTML=obj.status;
+              tr.append(td2);
+
+              var td4=document.createElement('td');
+              td4.innerHTML=obj.priority;
+              tr.append(td4);
+                        
+              var td5=document.createElement('td');
+              td5.innerHTML=obj.responder_id;
+              tr.append(td5);
+                    
+              var td6=document.createElement('td');
+              td6.innerHTML= obj.description;
+              tr.append(td6);
+
+              var td7=document.createElement('td');
+              var ar=document.createElement('a');
+              ar.innerHTML=obj.description_text;
+              td7.append(ar);
+              tr.append(td7);
+
+              var td8=document.createElement('td');
+              var ar1=document.createElement('a');
+              ar1.setAttribute('href', "'"+obj.attachments+"'")
+              ar1.innerHTML=obj.attachments;
+              td8.append(ar1);
+              tr.append(td8);
+
+              var td9=document.createElement('td');
+              td9.innerHTML= obj.updated_at;
+              tr.append(td9);
+
+              var td10=document.createElement('td');
+              td10.innerHTML= obj.product_id;
+              tr.append(td10);
+
+              var td11=document.createElement('td');
+              td11.innerHTML= obj.source;
+              tr.append(td11);
+
+              var td12=document.createElement('td');
+              td12.innerHTML= obj.type;
+              tr.append(td12);
+
+              var td13=document.createElement('td');
+              td13.innerHTML= obj.created_at;
+              tr.append(td13);
+
+              var td14=document.createElement('td');
+              td14.innerHTML= obj.due_by;
+              tr.append(td14);
+                            
+              var td15=document.createElement('td');
+              td15.innerHTML= obj.fr_due_by;
+              tr.append(td15);
+              
+              var td16=document.createElement('td');
+              td16.innerHTML= obj.is_escalated;
+              tr.append(td16);
+
+              var td17=document.createElement('td');
+              td17.innerHTML= obj.subject;
+              tr.append(td17);
+
+              var td18=document.createElement('td');
+              td18.innerHTML= obj.fr_escalated;
+              tr.append(td18);
+
+              var td19=document.createElement('td');
+              td19.innerHTML= obj.email_config_id;
+              tr.append(td19);
+
+              var td20=document.createElement('td');
+              td20.innerHTML= obj.custom_fields;
+              tr.append(td20);
+
+              var td21=document.createElement('td');
+              td21.innerHTML= obj.company_id;
+              tr.append(td21);
+
+              var td22=document.createElement('td');
+              td22.innerHTML= obj.spam;
+              tr.append(td22);
+
+              var td23=document.createElement('td');
+              td23.innerHTML= obj.cc_emails;
+              tr.append(td23);
+             
+              var td24=document.createElement('td');
+              td24.innerHTML= obj.reply_cc_emails;
+              tr.append(td24);
+
+              var td25=document.createElement('td');
+              td25.innerHTML= obj.to_emails;
+              tr.append(td25);
+
+              var td26=document.createElement('td');
+              td26.innerHTML= obj.support_email;
+              tr.append(td26);
+
+              var td27=document.createElement('td');
+              td27.innerHTML= obj.ticket_cc_emails;
+              tr.append(td27);
+
+              var td28=document.createElement('td');
+              td28.innerHTML= obj.fwd_emails;
+              tr.append(td28);
+
+
+              table.append(tr);
+              d.append(table);
+			  
+            },
+            error: function(jqXHR,tranStatus,data) {			
+               
+              x_request_id = jqXHR.getResponseHeader('X-Request-Id');
+              response_text = jqXHR.responseText;
+              alert('Status:'+jqXHR.status+'\n'+'Error Found'+'\n'+'ID:'+x_request_id+'\n'+'Responce:'+response_text+'\n'+'FOR THE REFERENCE CONTACT FRESHDESK DEV PORTAL');    
+              
+            }
+          }
+        );
+      }
+    );
+});
+
+$(document).ready(function(){
+    $("#btn2").click(
+      function() {
+        var yourdomain = 'newaccount1613515571753'; 
+        var api_key = 'gIuQClOzmAAIyFmXgNim';
+        var updated = $("#update").val();
+		var ticket_id = updated; // Id of the ticket to be edited. Say., 12
+        
+
+        ticket_data = '{ "subject" : "final subject", "priority" : 2 }';
+        $.ajax(
+          {     
+            url: "https://"+yourdomain+".freshdesk.com/api/v2/tickets/"+ticket_id,
+            type: 'PUT',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            headers: {
+              "Authorization": "Basic " + btoa(api_key + ":X")
+            },
+            data: ticket_data,
+            success: function(data, textStatus, jqXHR) {              
+              alert('Status'+':'+jqXHR.status+'\n'+'Sucessfully fetch the Data');
+              var obj=data;
+              var d=document.getElementById('response');
+              var table=document.createElement('table');
+              table.id="myTable";
+              var arr=['ID','Requester_id','Status','Priority','Responder_id','Description','Description_text','Attachments','Updated_at','product_id','Source','Type','Created_at','Due_by','Fr_due_by','Escalated','Email_config_id','custom_fields','Company_id','Spam','CC_emails','Reply_cc_emails','To_emails','Support_email','Ticket_cc_emails','Fwd_emails']
+              for(var j=0;j<arr.length;j++){
+                  var th=document.createElement('th');
+                  th.innerHTML= arr[j];
+                  table.append(th);
+                }
+              
+              var tr=document.createElement('tr');
+
+              var td1=document.createElement('td');
+              td1.innerHTML=obj.id;
+              tr.append(td1);
+
+              var td3=document.createElement('td');
+              td3.innerHTML=obj.requester_id;           
+              tr.append(td3);
+              
+                    
+              var td2=document.createElement('td');
+              td2.innerHTML=obj.status;
+              tr.append(td2);
+
+              var td4=document.createElement('td');
+              td4.innerHTML=obj.priority;
+              tr.append(td4);
+                        
+              var td5=document.createElement('td');
+              td5.innerHTML=obj.responder_id;
+              tr.append(td5);
+                    
+              var td6=document.createElement('td');
+              td6.innerHTML= obj.description;
+              tr.append(td6);
+
+              var td7=document.createElement('td');
+              var ar=document.createElement('a');
+              ar.innerHTML=obj.description_text;
+              td7.append(ar);
+              tr.append(td7);
+
+              var td8=document.createElement('td');
+              var ar1=document.createElement('a');
+              ar1.setAttribute('href', "'"+obj.attachments+"'")
+              ar1.innerHTML=obj.attachments;
+              td8.append(ar1);
+              tr.append(td8);
+
+              var td9=document.createElement('td');
+              td9.innerHTML= obj.updated_at;
+              tr.append(td9);
+
+              var td10=document.createElement('td');
+              td10.innerHTML= obj.product_id;
+              tr.append(td10);
+
+              var td11=document.createElement('td');
+              td11.innerHTML= obj.source;
+              tr.append(td11);
+
+              var td12=document.createElement('td');
+              td12.innerHTML= obj.type;
+              tr.append(td12);
+
+              var td13=document.createElement('td');
+              td13.innerHTML= obj.created_at;
+              tr.append(td13);
+
+              var td14=document.createElement('td');
+              td14.innerHTML= obj.due_by;
+              tr.append(td14);
+                            
+              var td15=document.createElement('td');
+              td15.innerHTML= obj.fr_due_by;
+              tr.append(td15);
+              
+              var td16=document.createElement('td');
+              td16.innerHTML= obj.is_escalated;
+              tr.append(td16);
+
+              var td17=document.createElement('td');
+              td17.innerHTML= obj.subject;
+              tr.append(td17);
+
+              var td18=document.createElement('td');
+              td18.innerHTML= obj.fr_escalated;
+              tr.append(td18);
+
+              var td19=document.createElement('td');
+              td19.innerHTML= obj.email_config_id;
+              tr.append(td19);
+
+              var td20=document.createElement('td');
+              td20.innerHTML= obj.custom_fields;
+              tr.append(td20);
+
+              var td21=document.createElement('td');
+              td21.innerHTML= obj.company_id;
+              tr.append(td21);
+
+              var td22=document.createElement('td');
+              td22.innerHTML= obj.spam;
+              tr.append(td22);
+
+              var td23=document.createElement('td');
+              td23.innerHTML= obj.cc_emails;
+              tr.append(td23);
+             
+              var td24=document.createElement('td');
+              td24.innerHTML= obj.reply_cc_emails;
+              tr.append(td24);
+
+              var td25=document.createElement('td');
+              td25.innerHTML= obj.to_emails;
+              tr.append(td25);
+
+              var td26=document.createElement('td');
+              td26.innerHTML= obj.support_email;
+              tr.append(td26);
+
+              var td27=document.createElement('td');
+              td27.innerHTML= obj.ticket_cc_emails;
+              tr.append(td27);
+
+              var td28=document.createElement('td');
+              td28.innerHTML= obj.fwd_emails;
+              tr.append(td28);
+
+
+              table.append(tr);
+              d.append(table);         
+            
+            },
+             error: function(jqXHR,tranStatus,data) {			
+              
+              x_request_id = jqXHR.getResponseHeader('X-Request-Id');
+              response_text = jqXHR.responseText;
+              alert('Status:'+jqXHR.status+'\n'+'Error Found'+'\n'+'ID:'+x_request_id+'\n'+'Responce:'+response_text+'\n'+'FOR THE REFERENCE CONTACT FRESHDESK DEV PORTAL');    
+              
+            }
+          }
+        );
+      }
+    );
+	$("#btn3").click(
+      function() {
+        var yourdomain = 'newaccount1613515571753'; 
+        var api_key = 'gIuQClOzmAAIyFmXgNim';
+        $.ajax(
+          {
+            url: "https://"+yourdomain+".freshdesk.com/api/v2/tickets",
+            type: 'GET',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            headers: {
+              "Authorization": "Basic " + btoa(api_key + ":x")
+            },
+            success: function(data, textStatus, jqXHR) {
+                         
+              alert('Status'+':'+jqXHR.status+'\n'+'Sucessfully fetch the Data');
+              var obj=data;
+              console.log(obj)
+              var d=document.getElementById('disp');
+              var table=document.createElement('table');
+              table.id="myTable";
+              var arr=['ID','Requester_id','Status','Priority','Responder_id','Description','Description_text','Attachments','Updated_at','product_id','Source','Type','Created_at','Due_by','Fr_due_by','Escalated','Email_config_id','custom_fields','Company_id','Spam','CC_emails','Reply_cc_emails','To_emails','Support_email','Ticket_cc_emails','Fwd_emails']
+              for(var j=0;j<arr.length;j++){
+                  var th=document.createElement('th');
+                  th.innerHTML= arr[j];
+                  table.append(th);
+                }
+              
+              
+              for(var i=0;i<data.length;i++)
+              {
+                    var tr=document.createElement('tr');
+
+                    var td1=document.createElement('td');
+                    td1.innerHTML=obj[i].id;
+                    tr.append(td1);
+
+                    var td3=document.createElement('td');
+                    td3.innerHTML=obj[i].requester_id;           
+                    tr.append(td3);
+                    
+                          
+                    var td2=document.createElement('td');
+                    td2.innerHTML=obj[i].status;
+                    tr.append(td2);
+
+                    var td4=document.createElement('td');
+                    td4.innerHTML=obj[i].priority;
+                    tr.append(td4);
+                              
+                    var td5=document.createElement('td');
+                    td5.innerHTML=obj[i].responder_id;
+                    tr.append(td5);
+                          
+                    var td6=document.createElement('td');
+                    td6.innerHTML= ''+obj[i].description;
+                    tr.append(td6);
+
+                    var td7=document.createElement('td');
+                    var ar=document.createElement('a');
+                    ar.innerHTML=''+obj[i].description_text;
+                    td7.append(ar);
+                    tr.append(td7);
+
+                    var td8=document.createElement('td');
+                    var ar1=document.createElement('a');
+                    ar1.setAttribute('href', "'"+obj.attachments+"'")
+                    ar1.innerHTML=''+obj[i].attachments;
+                    td8.append(ar1);
+                    tr.append(td8);
+
+                    var td9=document.createElement('td');
+                    td9.innerHTML= obj[i].updated_at;
+                    tr.append(td9);
+
+                    var td10=document.createElement('td');
+                    td10.innerHTML= obj[i].product_id;
+                    tr.append(td10);
+
+                    var td11=document.createElement('td');
+                    td11.innerHTML= obj[i].source;
+                    tr.append(td11);
+
+                    var td12=document.createElement('td');
+                    td12.innerHTML= obj[i].type;
+                    tr.append(td12);
+
+                    var td13=document.createElement('td');
+                    td13.innerHTML= obj[i].created_at;
+                    tr.append(td13);
+
+                    var td14=document.createElement('td');
+                    td14.innerHTML= obj[i].due_by;
+                    tr.append(td14);
+                                  
+                    var td15=document.createElement('td');
+                    td15.innerHTML= obj[i].fr_due_by;
+                    tr.append(td15);
+                    
+                    var td16=document.createElement('td');
+                    td16.innerHTML= obj[i].is_escalated;
+                    tr.append(td16);
+
+                    var td17=document.createElement('td');
+                    td17.innerHTML= obj[i].subject;
+                    tr.append(td17);
+
+                    var td18=document.createElement('td');
+                    td18.innerHTML= obj[i].fr_escalated;
+                    tr.append(td18);
+
+                    var td19=document.createElement('td');
+                    td19.innerHTML= obj[i].email_config_id;
+                    tr.append(td19);
+
+                    var td20=document.createElement('td');
+                    td20.innerHTML= obj[i].custom_fields;
+                    tr.append(td20);
+
+                    var td21=document.createElement('td');
+                    td21.innerHTML= obj[i].company_id;
+                    tr.append(td21);
+
+                    var td22=document.createElement('td');
+                    td22.innerHTML= obj[i].spam;
+                    tr.append(td22);
+
+                    var td23=document.createElement('td');
+                    td23.innerHTML= obj[i].cc_emails;
+                    tr.append(td23);
+                  
+                    var td24=document.createElement('td');
+                    td24.innerHTML= obj[i].reply_cc_emails;
+                    tr.append(td24);
+
+                    var td25=document.createElement('td');
+                    td25.innerHTML= obj[i].to_emails;
+                    tr.append(td25);
+
+                    var td26=document.createElement('td');
+                    td26.innerHTML= obj[i].support_email;
+                    tr.append(td26);
+
+                    var td27=document.createElement('td');
+                    td27.innerHTML= obj[i].ticket_cc_emails;
+                    tr.append(td27);
+
+                    var td28=document.createElement('td');
+                    td28.innerHTML= obj[i].fwd_emails;
+                    tr.append(td28);
+
+
+                    table.append(tr);
+
+              }
+              d.append(table);         
+			  
+            },
+             error: function(jqXHR,tranStatus,data) {			
+              
+              x_request_id = jqXHR.getResponseHeader('X-Request-Id');
+              response_text = jqXHR.responseText;
+              alert('Status:'+jqXHR.status+'\n'+'Error Found'+'\n'+'ID:'+x_request_id+'\n'+'Responce:'+response_text+'\n'+'FOR THE REFERENCE CONTACT FRESHDESK DEV PORTAL');    
+              
+            }
+          }
+        );
+      }
+    );
+});
+$(document).ready(function(){
+    $("#btn4").click(
+      function() {
+        var yourdomain = 'newaccount1613515571753'; 
+        var api_key = 'gIuQClOzmAAIyFmXgNim';
+        var updated = $("#delete").val();
+		var ticket_id = updated; // Id of the ticket to be edited. Say., 12        
+
+        ticket_data = '{ "subject" : "final subject", "priority" : 2 }';
+        $.ajax(
+          {     
+            url: "https://"+yourdomain+".freshdesk.com/api/v2/tickets/"+ticket_id,
+            type: 'DELETE',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            headers: {
+              "Authorization": "Basic " + btoa(api_key + ":X")
+            },
+            data: ticket_data,
+            success: function(data, textStatus, jqXHR) { 			  	  
+              $('#result').text('Success');
+              $('#code').text(jqXHR.status);
+              $('#response').html(JSON.stringify(data, null, "<br/>")); 
+			  console.log(data);						  
+            },
+             error: function(jqXHR,tranStatus,data) {			
+              
+              x_request_id = jqXHR.getResponseHeader('X-Request-Id');
+              response_text = jqXHR.responseText;
+              alert('Status:'+jqXHR.status+'\n'+'Error Found'+'\n'+'ID:'+x_request_id+'\n'+'Responce:'+response_text+'\n'+'FOR THE REFERENCE CONTACT FRESHDESK DEV PORTAL');    
+              
+            }
+          }
+        );
+      }
+    );
+});
+</script>
+</head>
+<body data-spy="scroll" data-target=".navbar-collapse">
+  <nav class="navbar navbar-default bootsnav navbar-fixed  "> <div>Ticket Generator</div> </nav>
+  <div>NOTE: Before any actions <b>Refresh</b> the page</div>
+ <div class="container">
+  <table cellspacing = '20'>
+    <tr>
+    <td> 										
+        <input type='file' id='myFile' class="form-control" />										
+    </td>
+    <td>
+        <button id="btn1" class="btn btn-primary m-top-20" color="black">Create ticket</button>
+        </td>
+       </tr>
+       <tr>
+      <td> 
+          <input type="number" id="update" class="form-control" placeholder="Enter the Ticket id" >            
+        
+      </td>
+      
+        <td >
+          <button id="btn2" class="btn btn-primary m-top-20" color="black">Update ticket</button>
+        </td>
+      
+      </tr>
+      <tr>
+        <td>Show All details</td>
+        <td><button id="btn3" class="btn btn-primary m-top-20" color="black">Fetch details</button> </td>
+      </tr>
+      <tr>
+      <td> 
+          <input type="number" id="delete" class="form-control" placeholder="enter the Ticket id" >            
+      </td>
+      <td>
+          <button id="btn4" class="btn btn-primary m-top-20" color="black">Delete ticket</button>
+        
+      </td>
+  </table>
+													
+</div>
+<div class="container">
+       <div id = 'result' class="container"></div>
+       <div id = 'code' class="container"></div>
+       <div id ='response'></div>
+       <div id="disp"class="container" ></div>
+</div>
+
+<div id='fun'>
+
+</div>
+</body>
+</html>
